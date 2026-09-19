@@ -130,15 +130,22 @@ public static class AudienceRules
             return false;
         }
 
-        // A usable rating is judged on the rating. Anything at or below the ceiling is in.
+        // A usable rating must clear the ceiling AND the quality floor. The floor matters
+        // as much as the ceiling: the point of this tag is to make an overwhelming library
+        // smaller, and a poorly reviewed film that happens to be rated PG adds noise rather
+        // than removing it. An item with no community rating at all fails here, which is
+        // deliberate - without a rating and without a score there is nothing to judge on.
         if (ratingScore.HasValue)
         {
-            return ratingScore.Value <= config.MaxRatingScore;
+            return ratingScore.Value <= config.MaxRatingScore
+                   && item.CommunityRating.HasValue
+                   && item.CommunityRating.Value >= config.MinCommunityRating;
         }
 
-        // No usable rating: fall back to reputation. This is what keeps the older
-        // classics, which are exactly what this audience wants and which TMDB
-        // frequently has no US certification for.
+        // No usable rating: fall back to reputation alone, against its own floor. This is
+        // what keeps the older classics, which are exactly what this audience wants and
+        // which TMDB frequently has no US certification for. The floor is separate because
+        // an unrated item is carrying more risk, so it may warrant a higher bar.
         return item.CommunityRating.HasValue
                && item.CommunityRating.Value >= config.MinCommunityRatingWhenUnrated;
     }

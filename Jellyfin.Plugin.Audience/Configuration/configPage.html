@@ -85,6 +85,17 @@
                 </div>
 
                 <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="MinCommunityRating">Community rating floor for rated items</label>
+                    <input is="emby-input" type="number" id="MinCommunityRating" min="0" max="10" step="0.1" />
+                    <div class="fieldDescription">
+                        A rated item must clear this as well as the ceiling. The point of the tag
+                        is to make an overwhelming library smaller, and a poorly reviewed film
+                        that happens to be rated PG adds noise rather than removing it. An item
+                        with no community rating at all fails this check.
+                    </div>
+                </div>
+
+                <div class="inputContainer">
                     <label class="inputLabel inputLabelUnfocused" for="MinCommunityRatingWhenUnrated">Community rating floor for unrated items</label>
                     <input is="emby-input" type="number" id="MinCommunityRatingWhenUnrated" min="0" max="10" step="0.1" />
                     <div class="fieldDescription">
@@ -129,6 +140,7 @@
                         document.querySelector('#ApplyTags').checked = config.ApplyTags;
                         document.querySelector('#TagName').value = config.TagName;
                         document.querySelector('#MaxRatingScore').value = config.MaxRatingScore;
+                        document.querySelector('#MinCommunityRating').value = config.MinCommunityRating;
                         document.querySelector('#MinCommunityRatingWhenUnrated').value = config.MinCommunityRatingWhenUnrated;
                         document.querySelector('#RespectManualUntag').checked = config.RespectManualUntag;
                         Dashboard.hideLoadingMsg();
@@ -145,6 +157,7 @@
                         config.ApplyTags = document.querySelector('#ApplyTags').checked;
                         config.TagName = document.querySelector('#TagName').value;
                         config.MaxRatingScore = parseInt(document.querySelector('#MaxRatingScore').value, 10);
+                        config.MinCommunityRating = parseFloat(document.querySelector('#MinCommunityRating').value);
                         config.MinCommunityRatingWhenUnrated = parseFloat(document.querySelector('#MinCommunityRatingWhenUnrated').value);
                         config.RespectManualUntag = document.querySelector('#RespectManualUntag').checked;
 

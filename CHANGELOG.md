@@ -23,10 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   map, and left alone.
 
 - Audience tagging. Applies a configurable tag (default `grandma`) to titles
-  that pass a genre and rating rule, so a user account can be narrowed with
-  Allowed Tags. Because Allowed Tags fails closed, new content is invisible to
-  that account until tagged, which is why this runs on a schedule rather than
-  once.
+  that clear a genre rule, a rating ceiling and a community-rating floor, so a
+  user account can be narrowed with Allowed Tags. The floor applies to rated and
+  unrated titles alike, through separate settings, because a ceiling on its own
+  admits poorly reviewed titles that happen to carry a mild rating, and the
+  point of the tag is to make an overwhelming library smaller rather than to
+  reproduce it. Unrated titles are judged on reputation alone, which is what
+  keeps the older classics TMDB holds no US certification for. Because Allowed
+  Tags fails closed, new content is invisible to that account until tagged,
+  which is why this runs on a schedule rather than once.
 
 - A curation ledger at `tagged-ids.txt` in the plugin data folder. An item whose
   id is in the ledger but which no longer carries the tag was untagged by a

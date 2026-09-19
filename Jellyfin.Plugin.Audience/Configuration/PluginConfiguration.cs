@@ -52,6 +52,15 @@ public class PluginConfiguration : BasePluginConfiguration
     public int MaxRatingScore { get; set; } = 14;
 
     /// <summary>
+    /// Gets or sets the community rating an item must reach to be tagged when it DOES have a
+    /// usable official rating. The ceiling alone is not enough: this tag exists to make an
+    /// overwhelming library smaller, and a poorly reviewed film that happens to be rated PG
+    /// adds noise rather than removing it. An item carrying no community rating at all fails
+    /// this check, which is deliberate.
+    /// </summary>
+    public double MinCommunityRating { get; set; } = 6.0;
+
+    /// <summary>
     /// Gets or sets the minimum community rating for an item with no usable parental rating.
     /// </summary>
     /// <remarks>
