@@ -1,0 +1,5 @@
+Jellyfin.Plugin.Audience
+
+Portions of this project were written with assistance from Claude, an AI
+assistant made by Anthropic. All code was reviewed, built and verified against
+a live Jellyfin server before release.

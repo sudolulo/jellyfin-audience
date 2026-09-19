@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Audience</title>
+</head>
+<body>
+<div id="AudienceConfigPage"
+     data-role="page"
+     class="page type-interior pluginConfigurationPage"
+     data-require="emby-input,emby-button,emby-checkbox">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="AudienceConfigForm">
+
+                <div class="verticalSection">
+                    <h2 class="sectionTitle">Audience</h2>
+                    <p class="fieldDescription">
+                        Repairs ratings Jellyfin cannot parse, and tags the items a
+                        reduced-library profile should see.
+                    </p>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input is="emby-checkbox" type="checkbox" id="Enabled" />
+                        <span>Enable the scheduled task</span>
+                    </label>
+                    <div class="fieldDescription checkboxFieldDescription">
+                        When unchecked the task still appears in Scheduled Tasks but does nothing.
+                    </div>
+                </div>
+
+                <div class="verticalSection">
+                    <h3 class="sectionTitle">Rating repair</h3>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input is="emby-checkbox" type="checkbox" id="RepairRatings" />
+                        <span>Repair unparseable ratings</span>
+                    </label>
+                    <div class="fieldDescription checkboxFieldDescription">
+                        Rewrites foreign board ratings to their US equivalent, for example
+                        Singapore M18 to TV-MA and Spain TP to TV-G. A rating Jellyfin cannot
+                        parse is treated as unrated, which means it stays visible to every
+                        profile including one with an age ceiling. Ratings are never guessed
+                        from genre or synopsis; anything unmapped is logged as a warning
+                        instead.
+                    </div>
+                </div>
+
+                <div class="verticalSection">
+                    <h3 class="sectionTitle">Audience tagging</h3>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input is="emby-checkbox" type="checkbox" id="ApplyTags" />
+                        <span>Apply the audience tag</span>
+                    </label>
+                    <div class="fieldDescription checkboxFieldDescription">
+                        Set a user's Allowed Tags to this tag to reduce what they see.
+                        Allowed Tags fails closed, so new content is invisible to that user
+                        until this task tags it.
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="TagName">Tag name</label>
+                    <input is="emby-input" type="text" id="TagName" />
+                    <div class="fieldDescription">
+                        Lowercase with no spaces is safest: tag matching normalises the value
+                        and then compares it ordinally.
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="MaxRatingScore">Maximum rating score</label>
+                    <input is="emby-input" type="number" id="MaxRatingScore" min="0" max="18" step="1" />
+                    <div class="fieldDescription">
+                        US ladder: 0 G and TV-G, 7 TV-Y7, 10 PG and TV-PG, 13 PG-13,
+                        14 TV-14, 17 R and TV-MA. Inclusive, so 14 admits TV-14 itself.
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="MinCommunityRatingWhenUnrated">Community rating floor for unrated items</label>
+                    <input is="emby-input" type="number" id="MinCommunityRatingWhenUnrated" min="0" max="10" step="0.1" />
+                    <div class="fieldDescription">
+                        Unrated items are admitted only above this community rating. This is a
+                        weak gate on obscure titles, where a perfect score can rest on a
+                        handful of votes.
+                    </div>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input is="emby-checkbox" type="checkbox" id="RespectManualUntag" />
+                        <span>Respect manual untagging</span>
+                    </label>
+                    <div class="fieldDescription checkboxFieldDescription">
+                        Remember every item this task has tagged. If the tag is later removed
+                        by hand, treat that as a deliberate decision and never re-apply it.
+                        Turning this off makes each run undo your curation.
+                    </div>
+                </div>
+
+                <div>
+                    <button is="emby-button" type="submit" class="raised button-submit block">
+                        <span>Save</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var pluginId = 'c7e4a1f2-9b3d-4a6e-8c51-3f7d2b9e04a6';
+
+            document.querySelector('#AudienceConfigPage')
+                .addEventListener('pageshow', function () {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        document.querySelector('#Enabled').checked = config.Enabled;
+                        document.querySelector('#RepairRatings').checked = config.RepairRatings;
+                        document.querySelector('#ApplyTags').checked = config.ApplyTags;
+                        document.querySelector('#TagName').value = config.TagName;
+                        document.querySelector('#MaxRatingScore').value = config.MaxRatingScore;
+                        document.querySelector('#MinCommunityRatingWhenUnrated').value = config.MinCommunityRatingWhenUnrated;
+                        document.querySelector('#RespectManualUntag').checked = config.RespectManualUntag;
+                        Dashboard.hideLoadingMsg();
+                    });
+                });
+
+            document.querySelector('#AudienceConfigForm')
+                .addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        config.Enabled = document.querySelector('#Enabled').checked;
+                        config.RepairRatings = document.querySelector('#RepairRatings').checked;
+                        config.ApplyTags = document.querySelector('#ApplyTags').checked;
+                        config.TagName = document.querySelector('#TagName').value;
+                        config.MaxRatingScore = parseInt(document.querySelector('#MaxRatingScore').value, 10);
+                        config.MinCommunityRatingWhenUnrated = parseFloat(document.querySelector('#MinCommunityRatingWhenUnrated').value);
+                        config.RespectManualUntag = document.querySelector('#RespectManualUntag').checked;
+
+                        ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                            Dashboard.processPluginConfigurationUpdateResult(result);
+                        });
+                    });
+                    return false;
+                });
+        })();
+    </script>
+</div>
+</body>
+</html>

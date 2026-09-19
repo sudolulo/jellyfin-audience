@@ -1,0 +1,13 @@
+{
+    "category": "Metadata",
+    "guid": "c7e4a1f2-9b3d-4a6e-8c51-3f7d2b9e04a6",
+    "name": "Audience",
+    "description": "Repairs ratings Jellyfin cannot parse and maintains an audience tag for filtered user accounts.",
+    "overview": "Rating repair and audience tagging",
+    "owner": "flan",
+    "targetAbi": "10.11.0.0",
+    "framework": "net9.0",
+    "version": "1.0.0.0",
+    "changelog": "First release. Remaps unparseable board ratings to their US equivalents, locks the repaired value, and maintains an audience tag with a ledger that respects manual untagging.",
+    "timestamp": "2026-09-19T00:00:00Z"
+}
