@@ -12,12 +12,11 @@
 
   <!--
     Version choices are not arbitrary. jellyfin-placard ships with exactly this
-    combination (net9.0 + Jellyfin.Controller 10.11.11) and is installed and
-    Active on Serber, which runs Jellyfin 12.0.0, with its scheduled task
-    registered and completing runs. A 10.11-targeted plugin therefore loads on
-    12.0. Do not "upgrade" these to chase the server version without first
-    confirming a newer Jellyfin.Controller package actually exists and that the
-    resulting build still loads.
+    combination (net9.0 + Jellyfin.Controller 10.11.11), which has been verified
+    to load and complete its scheduled task against a newer Jellyfin server. Do
+    not "upgrade" these to chase the server version without first confirming a
+    newer Jellyfin.Controller package actually exists and that the resulting
+    build still loads.
   -->
   <ItemGroup>
     <PackageReference Include="Jellyfin.Controller" Version="10.11.11" />
