@@ -1,3 +1,5 @@
+.home/
+.ledger-tests/
 bin/
 obj/
 *.user
