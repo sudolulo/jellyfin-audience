@@ -15,7 +15,7 @@
     plugin runtime. Keep the target framework aligned with the controller API.
   -->
   <ItemGroup>
-    <PackageReference Include="Jellyfin.Controller" Version="12.4.0" />
+    <PackageReference Include="Jellyfin.Controller" Version="12.4.0" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>
