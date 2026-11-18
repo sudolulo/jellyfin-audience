@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Jellyfin.Plugin.Audience</RootNamespace>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
@@ -11,15 +11,11 @@
   </PropertyGroup>
 
   <!--
-    Version choices are not arbitrary. jellyfin-placard ships with exactly this
-    combination (net9.0 + Jellyfin.Controller 10.11.11), which has been verified
-    to load and complete its scheduled task against a newer Jellyfin server. Do
-    not "upgrade" these to chase the server version without first confirming a
-    newer Jellyfin.Controller package actually exists and that the resulting
-    build still loads.
+    Jellyfin.Controller 12.4.0 targets .NET 10, as does the Jellyfin 12
+    plugin runtime. Keep the target framework aligned with the controller API.
   -->
   <ItemGroup>
-    <PackageReference Include="Jellyfin.Controller" Version="10.11.11" />
+    <PackageReference Include="Jellyfin.Controller" Version="12.4.0" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>

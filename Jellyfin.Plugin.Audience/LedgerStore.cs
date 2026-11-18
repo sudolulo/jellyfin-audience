@@ -24,10 +24,13 @@ public static class LedgerStore
     /// <summary>
     /// Loads the set of previously tagged item ids. Returns an empty set on first run.
     /// </summary>
-    public static HashSet<Guid> Load()
+    public static HashSet<Guid> Load() => LoadFromPath(LedgerPath);
+
+    internal static HashSet<Guid> Load(string dataFolder) => LoadFromPath(Path.Combine(dataFolder, FileName));
+
+    private static HashSet<Guid> LoadFromPath(string path)
     {
         var result = new HashSet<Guid>();
-        var path = LedgerPath;
 
         if (!File.Exists(path))
         {
@@ -59,9 +62,12 @@ public static class LedgerStore
     /// the next run believes it has never seen, which silently re-applies tags a human
     /// deliberately removed.
     /// </remarks>
-    public static void Save(HashSet<Guid> ids)
+    public static void Save(HashSet<Guid> ids) => SaveToPath(LedgerPath, ids);
+
+    internal static void Save(string dataFolder, HashSet<Guid> ids) => SaveToPath(Path.Combine(dataFolder, FileName), ids);
+
+    private static void SaveToPath(string path, HashSet<Guid> ids)
     {
-        var path = LedgerPath;
         var directory = Path.GetDirectoryName(path);
 
         if (!string.IsNullOrEmpty(directory))
