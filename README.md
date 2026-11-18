@@ -72,7 +72,7 @@ curation. It exists for the case where you want to reset and start again.
 
 ## Building
 
-Needs the .NET 9 SDK. On a machine where it is a user-local install rather than
+Needs the .NET 10 SDK. On a machine where it is a user-local install rather than
 a system package, it will not be on the PATH of a non-interactive shell:
 
 ```bash
@@ -81,7 +81,7 @@ export PATH="$DOTNET_ROOT:$PATH"
 dotnet build Jellyfin.Plugin.Audience/Jellyfin.Plugin.Audience.csproj -c Release
 ```
 
-The output is `Jellyfin.Plugin.Audience/bin/Release/net9.0/Jellyfin.Plugin.Audience.dll`.
+The output is `Jellyfin.Plugin.Audience/bin/Release/net10.0/Jellyfin.Plugin.Audience.dll`.
 
 ## Installing
 
@@ -90,10 +90,8 @@ Jellyfin's `plugins` directory, then restart the server. The plugin appears
 under Dashboard, Plugins, and its task appears under Scheduled Tasks as
 "Repair ratings and apply audience tags".
 
-`targetAbi` is `10.11.0.0`. That is deliberate and is not a mistake on a 12.x
-server: a plugin built against `Jellyfin.Controller` 10.11.11 loads and runs on
-Jellyfin 12.0. Do not raise it without confirming the newer package exists and
-the result still loads.
+This build targets Jellyfin 12.4 and .NET 10, with `targetAbi` set to
+`12.4.0.0`. It is not intended for older Jellyfin versions.
 
 ## Releasing
 
